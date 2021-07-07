@@ -10,10 +10,8 @@ app.use(cors())
 router.get('/get', async function (req, res) {
   await axios.request(options)
     .then((response) => {
-      let r = ""
-      r = response.data
-      let x = r.slice(0, 50)
-      console.log(r)
+      const { Classic } = response.data
+      res.json(Classic.slice(100, 150))
     })
     .catch((error) => {
       console.log(error)
