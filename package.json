@@ -1,0 +1,28 @@
+{
+  "name": "desaf_paketa_cons_api_hearthstone",
+  "version": "1.0.0",
+  "description": "- O projeto deve fornecer maneiras de\r filtrar escolhas do usuário\r - Criar o próprio servidor NODE, consumindo a API e depois\r criar o front-end consumindo a API através no servidor criado\r - Possuir um front-end amigável\r - Responder às requisições com no máximo 30 cards por vez de consulta\r - O front-end não pode ter a responsabilidade de chamar a API do Hearthstone",
+  "main": "index.js",
+  "type": "module",
+  "scripts": {
+    "dev": "nodemon ./api/routes/src/server.js"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/alissonperim/desaf_paketa_cons_api_hearthstone.git"
+  },
+  "keywords": [],
+  "author": "",
+  "license": "ISC",
+  "bugs": {
+    "url": "https://github.com/alissonperim/desaf_paketa_cons_api_hearthstone/issues"
+  },
+  "homepage": "https://github.com/alissonperim/desaf_paketa_cons_api_hearthstone#readme",
+  "dependencies": {
+    "axios": "^0.21.1",
+    "cors": "^2.8.5",
+    "dotenv": "^10.0.0",
+    "express": "^4.17.1",
+    "nodemon": "^2.0.9"
+  }
+}
