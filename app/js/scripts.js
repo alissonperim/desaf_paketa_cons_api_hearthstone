@@ -1,30 +1,9 @@
-const selectClassOptions = document.querySelector('#cards-class')
-const selectFactionOptions = document.querySelector('#cards-faction')
-const selectRaceOptions = document.querySelector('#cards-race')
+const selectClassOptions = document.querySelector('#classes')
+const selectFactionOptions = document.querySelector('#factions')
+const selectRaceOptions = document.querySelector('#races')
 const cardsSectionDiv = document.querySelector('.cards-section')
 const cardsFilterSelect = document.querySelectorAll('.cards-filter')
 const selectOptions = document.querySelectorAll('option')
-
-const fetchResponse = async (selectFilter, typeOfFilter) => {
-  cardsSectionDiv.innerHTML = ""
-  console.log(selectFilter, typeOfFilter)
-  await fetch(`http://localhost:3000/${selectFilter}/${typeOfFilter}`)
-    .then(res => res.json())
-    .then(data => {
-      data.map((d) => {
-        if (d.img) {
-          cardsSectionDiv.innerHTML += `
-                            <div class="cards-section-container-img">
-                                <img src="${d.img}" alt="imgAlt"/>
-                            </div>
-                        `
-        }
-      })
-    })
-}
-
-
-
 
 async function classesToOptions() {
   const url = `http://localhost:3000/info`
@@ -57,19 +36,64 @@ async function returnGet() {
     .then(T => {
       T.map((item) => {
         if (item.img) {
-          cardsSectionDiv.innerHTML += `
-                        <div class="cards-section-container-img">
-                            <img src="${item.img}" alt="imgAlt"/>
-                        </div>
-                    `
+          cardsSectionDiv
+            .innerHTML += `
+            <div class="cards-section-container-img">
+                <img src="${item.img}" alt="imgAlt" class="cards-section-container-img__img"/>
+            </div>
+          `
+        } else {
+          cardsSectionDiv
+            .innerHTML += `
+            <div class="cards-section-container-img">
+                <div class="card-png">
+                  <p>${item.name}</p>
+                </div>
+            </div>
+          `
         }
       })
     })
 }
 
-async function returnByClass() {
-
+const setOptionsToSelectedZero = (filter) => {
+  const selects = ["classes", "factions", "races"]
+  selects.forEach(select => {
+    if (select != filter) {
+      document.getElementById(select).selectedIndex = 0
+    }
+  })
 }
+
+const fetchResponse = async (selectFilter, typeOfFilter) => {
+  cardsSectionDiv.innerHTML = ""
+  console.log(selectFilter, typeOfFilter)
+  setOptionsToSelectedZero(selectFilter)
+  await fetch(`http://localhost:3000/${selectFilter}/${typeOfFilter}`)
+    .then(res => res.json())
+    .then(data => {
+      data.map((d) => {
+        if (d.img) {
+          cardsSectionDiv.innerHTML += `
+            <div class="cards-section-container-img">
+            <img src="${d.img}" alt="imgAlt" class="cards-section-container-img__img"/>
+            </div>
+        `
+        } else {
+          cardsSectionDiv
+            .innerHTML += `
+            <div class="cards-section-container-img">
+                <div class="card-png">
+                  <p class="card-png__p">${d.name}</p>
+                </div>
+            </div>
+          `
+        }
+      })
+    })
+}
+
+
 
 
 const init = () => {
