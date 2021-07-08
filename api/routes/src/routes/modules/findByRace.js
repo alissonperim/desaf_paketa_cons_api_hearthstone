@@ -8,13 +8,13 @@ app.use(cors())
 
 const router = express.Router()
 
-router.get('/races/:raceName', async function (req, res) {
-  const { raceName } = req.params
+router.get('/races/:raceName/:amount', async function (req, res) {
+  const { raceName, amount } = req.params
   options.url = `https://omgvamp-hearthstone-v1.p.rapidapi.com/cards/races/${raceName}`
 
   await axios.request(options)
     .then((response) => {
-      return res.json(response.data.slice(0, 50))
+      return res.json(response.data.slice(0, amount))
     })
     .catch((error) => {
       console.log(error)

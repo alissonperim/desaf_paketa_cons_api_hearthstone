@@ -1,9 +1,23 @@
 const selectClassOptions = document.querySelector('#classes')
 const selectFactionOptions = document.querySelector('#factions')
 const selectRaceOptions = document.querySelector('#races')
+const selectAmoutnToReturn = document.querySelector('#amount')
 const cardsSectionDiv = document.querySelector('.cards-section')
 const cardsFilterSelect = document.querySelectorAll('.cards-filter')
 const selectOptions = document.querySelectorAll('option')
+let amountToReturn = 20
+
+const startLoad = () => {
+  document.getElementById('loading').style.display = 'block'
+}
+
+const endLoad = () => {
+  document.getElementById('loading').style.display = 'none'
+}
+
+const setAmountOfCards = (amount) => {
+  amountToReturn = amount
+}
 
 async function classesToOptions() {
   const url = `http://localhost:3000/info`
@@ -31,6 +45,7 @@ async function classesToOptions() {
 
 async function returnGet() {
   const url = 'http://localhost:3000/get'
+  startLoad()
   await fetch(url)
     .then((response) => { return response.json() })
     .then(T => {
@@ -42,6 +57,7 @@ async function returnGet() {
                 <img src="${item.img}" alt="imgAlt" class="cards-section-container-img__img"/>
             </div>
           `
+          endLoad()
         } else {
           cardsSectionDiv
             .innerHTML += `
@@ -51,6 +67,7 @@ async function returnGet() {
                 </div>
             </div>
           `
+          endLoad()
         }
       })
     })
@@ -65,11 +82,12 @@ const setOptionsToSelectedZero = (filter) => {
   })
 }
 
-const fetchResponse = async (selectFilter, typeOfFilter) => {
+const fetchResponse = async (selectFilter, typeOfFilter, amount) => {
+
   cardsSectionDiv.innerHTML = ""
-  console.log(selectFilter, typeOfFilter)
+  startLoad()
   setOptionsToSelectedZero(selectFilter)
-  await fetch(`http://localhost:3000/${selectFilter}/${typeOfFilter}`)
+  await fetch(`http://localhost:3000/${selectFilter}/${typeOfFilter}/${amountToReturn}`)
     .then(res => res.json())
     .then(data => {
       data.map((d) => {
@@ -79,6 +97,7 @@ const fetchResponse = async (selectFilter, typeOfFilter) => {
             <img src="${d.img}" alt="imgAlt" class="cards-section-container-img__img"/>
             </div>
         `
+          endLoad()
         } else {
           cardsSectionDiv
             .innerHTML += `
@@ -91,6 +110,7 @@ const fetchResponse = async (selectFilter, typeOfFilter) => {
         }
       })
     })
+    .finally(endLoad())
 }
 
 
@@ -103,14 +123,22 @@ const init = () => {
     let nameOfSelect = selectClassOptions.getAttribute('name')
     fetchResponse(nameOfSelect, e.target.value)
   })
+
   selectFactionOptions.addEventListener('change', (e) => {
     let nameOfSelect = selectFactionOptions.getAttribute('name')
     fetchResponse(nameOfSelect, e.target.value)
   })
+
   selectRaceOptions.addEventListener('change', (e) => {
     let nameOfSelect = selectRaceOptions.getAttribute('name')
     fetchResponse(nameOfSelect, e.target.value)
   })
+
+  selectAmoutnToReturn.addEventListener('change', (e) => {
+    console.log(e.target.value)
+    setAmountOfCards(e.target.value)
+  })
+
 }
 
 init()
